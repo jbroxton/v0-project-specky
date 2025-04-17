@@ -182,7 +182,7 @@ export type Database = {
           id?: string
           position?: any | null
           suggested_replacement?: string | null
-          text?: string
+          text: string
         }
       }
       profiles: {

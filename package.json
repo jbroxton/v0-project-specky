@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
-    "@radix-ui/react-accordion": "^1.2.2",
+    "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "^1.1.4",
     "@radix-ui/react-aspect-ratio": "^1.1.1",
     "@radix-ui/react-avatar": "latest",
@@ -64,7 +64,8 @@
     "@supabase/auth-helpers-nextjs": "latest",
     "uuid": "latest",
     "react-markdown": "latest",
-    "next-client-cookies": "latest"
+    "next-client-cookies": "latest",
+    "react-hot-toast": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

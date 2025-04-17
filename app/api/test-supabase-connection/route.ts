@@ -1,10 +1,12 @@
+// Fix the API route to ensure it always returns valid JSON
+
 import { NextResponse } from "next/server"
-import { createServerSupabaseClient } from "@/lib/supabase-server"
+import { getSupabaseClient } from "@/lib/supabase"
 
 export async function GET() {
   try {
     console.log("Creating Supabase client...")
-    const supabase = createServerSupabaseClient()
+    const supabase = getSupabaseClient()
 
     console.log("Testing database connection...")
 
@@ -22,6 +24,11 @@ export async function GET() {
       if (connectionError) {
         if (connectionError.code === "PGRST116") {
           console.log("Connection successful (table doesn't exist)")
+          return NextResponse.json({
+            success: true,
+            message: "Database connection successful",
+            details: "The test table doesn't exist, but the connection is working properly.",
+          })
         } else {
           console.error("Connection error:", connectionError)
           return NextResponse.json(
@@ -35,80 +42,12 @@ export async function GET() {
         }
       } else {
         console.log("Connection successful (table exists)")
+        return NextResponse.json({
+          success: true,
+          message: "Database connection successful",
+          data: connectionTest,
+        })
       }
-
-      // Now try to execute a simple RPC function
-      console.log("Testing RPC function...")
-      const { data: rpcTest, error: rpcError } = await supabase.rpc("test_connection")
-
-      if (rpcError) {
-        // If the function doesn't exist, that's not a connection issue
-        if (rpcError.message.includes("function test_connection() does not exist")) {
-          console.log("RPC function doesn't exist, but connection works")
-
-          // Create the test function
-          console.log("Creating test function...")
-          const { error: createFunctionError } = await supabase.sql(`
-            CREATE OR REPLACE FUNCTION test_connection()
-            RETURNS jsonb AS $$
-            BEGIN
-              RETURN jsonb_build_object('status', 'success', 'timestamp', now());
-            END;
-            $$ LANGUAGE plpgsql;
-          `)
-
-          if (createFunctionError) {
-            console.error("Error creating test function:", createFunctionError)
-            return NextResponse.json(
-              {
-                success: false,
-                error: `Error creating test function: ${createFunctionError.message}`,
-                connectionStatus: "OK",
-              },
-              { status: 500 },
-            )
-          }
-
-          // Try the function again
-          console.log("Testing newly created function...")
-          const { data: retryData, error: retryError } = await supabase.rpc("test_connection")
-
-          if (retryError) {
-            console.error("Error calling test function:", retryError)
-            return NextResponse.json(
-              {
-                success: false,
-                error: `Error calling test function: ${retryError.message}`,
-                connectionStatus: "OK",
-              },
-              { status: 500 },
-            )
-          }
-
-          return NextResponse.json({
-            success: true,
-            message: "Successfully connected to Supabase and created test function",
-            data: retryData,
-          })
-        } else {
-          console.error("RPC error:", rpcError)
-          return NextResponse.json(
-            {
-              success: false,
-              error: `RPC error: ${rpcError.message}`,
-              code: rpcError.code,
-              connectionStatus: "OK",
-            },
-            { status: 500 },
-          )
-        }
-      }
-
-      return NextResponse.json({
-        success: true,
-        message: "Successfully connected to Supabase and executed test function",
-        data: rpcTest,
-      })
     } catch (dbError) {
       console.error("Database operation error:", dbError)
       return NextResponse.json(
