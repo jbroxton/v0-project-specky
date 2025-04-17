@@ -1,0 +1,228 @@
+export type Database = {
+  public: {
+    Tables: {
+      comments: {
+        Row: {
+          created_at: string | null
+          document_id: string | null
+          highlighted_text: string | null
+          id: string
+          is_resolved: boolean | null
+          position: any | null
+          text: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_id?: string | null
+          highlighted_text?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          position?: any | null
+          text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_id?: string | null
+          highlighted_text?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          position?: any | null
+          text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+      }
+      conversations: {
+        Row: {
+          created_at: string | null
+          document_id: string | null
+          document_title: string | null
+          id: string
+          is_archived: boolean | null
+          metadata: any | null
+          model: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_id?: string | null
+          document_title?: string | null
+          id?: string
+          is_archived?: boolean | null
+          metadata?: any | null
+          model?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_id?: string | null
+          document_title?: string | null
+          id?: string
+          is_archived?: boolean | null
+          metadata?: any | null
+          model?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+      }
+      documents: {
+        Row: {
+          content: any | null
+          created_at: string | null
+          description: string | null
+          document_type: string | null
+          id: string
+          is_archived: boolean | null
+          is_public: boolean | null
+          status: string | null
+          title: string
+          updated_at: string | null
+          user_id: string | null
+          version: string | null
+        }
+        Insert: {
+          content?: any | null
+          created_at?: string | null
+          description?: string | null
+          document_type?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_public?: boolean | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+          version?: string | null
+        }
+        Update: {
+          content?: any | null
+          created_at?: string | null
+          description?: string | null
+          document_type?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_public?: boolean | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+          version?: string | null
+        }
+      }
+      document_versions: {
+        Row: {
+          content: any
+          created_at: string | null
+          created_by: string | null
+          document_id: string | null
+          id: string
+          notes: string | null
+          version: string
+        }
+        Insert: {
+          content: any
+          created_at?: string | null
+          created_by?: string | null
+          document_id?: string | null
+          id?: string
+          notes?: string | null
+          version: string
+        }
+        Update: {
+          content?: any
+          created_at?: string | null
+          created_by?: string | null
+          document_id?: string | null
+          id?: string
+          notes?: string | null
+          version?: string
+        }
+      }
+      fixes: {
+        Row: {
+          applied: boolean | null
+          created_at: string | null
+          description: string | null
+          document_id: string | null
+          error_number: number | null
+          fix_type: string | null
+          id: string
+          position: any | null
+          suggested_replacement: string | null
+          text: string
+        }
+        Insert: {
+          applied?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          document_id?: string | null
+          error_number?: number | null
+          fix_type?: string | null
+          id?: string
+          position: any | null
+          suggested_replacement?: string | null
+          text: string
+        }
+        Update: {
+          applied?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          document_id?: string | null
+          error_number?: number | null
+          fix_type?: string | null
+          id?: string
+          position?: any | null
+          suggested_replacement?: string | null
+          text?: string
+        }
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          job_title: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          job_title?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          job_title?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+      }
+    }
+    Functions: {
+      [_ in never]: never
+    }
+  }
+}

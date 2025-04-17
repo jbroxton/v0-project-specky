@@ -1,30 +1,25 @@
 import { NextResponse } from "next/server"
+import { validateEnv } from "@/lib/env-validation"
 
-// Use a synchronous function for the route handler
 export function GET() {
   try {
-    // Create a simple object with environment variable status
-    const envVars = {
-      SUPABASE_URL: process.env.SUPABASE_URL ? "Set" : "Not set",
-      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? "Set" : "Not set",
-      SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY ? "Set" : "Not set",
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "Set" : "Not set",
-      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? "Set" : "Not set",
-      SUPABASE_JWT_SECRET: process.env.SUPABASE_JWT_SECRET ? "Set" : "Not set",
-    }
+    const { valid, missing, variables } = validateEnv()
 
-    // Check for missing variables
-    const missingVars = Object.entries(envVars)
-      .filter(([_, value]) => value === "Not set")
-      .map(([key]) => key)
+    // Mask sensitive values for security
+    const safeVariables = Object.entries(variables).reduce(
+      (acc, [key, value]) => {
+        acc[key] = value ? (key.includes("KEY") || key.includes("SECRET") ? "Set (hidden)" : "Set") : "Not set"
+        return acc
+      },
+      {} as Record<string, string>,
+    )
 
-    // Return appropriate response
-    if (missingVars.length > 0) {
+    if (!valid) {
       return NextResponse.json(
         {
           success: false,
-          error: `Missing environment variables: ${missingVars.join(", ")}`,
-          variables: envVars,
+          error: `Missing environment variables: ${missing.join(", ")}`,
+          variables: safeVariables,
         },
         { status: 500 },
       )
@@ -33,7 +28,7 @@ export function GET() {
     return NextResponse.json({
       success: true,
       message: "All required environment variables are set",
-      variables: envVars,
+      variables: safeVariables,
     })
   } catch (error) {
     console.error("Error checking environment variables:", error)
