@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { ChatWindow } from "@/components/chat-window"
-import { useChat } from "@/context/chat-context"
+import { useChat } from "@/hooks/use-chat"
 
 export default function ChatTestPage() {
   const { startNewConversation, currentConversation } = useChat()

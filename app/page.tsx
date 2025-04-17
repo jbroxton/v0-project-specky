@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { Button } from "@/components/ui/button"
 import { CheckSquare, FileText, Zap, ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"

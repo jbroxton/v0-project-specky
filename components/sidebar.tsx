@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -15,6 +15,7 @@ import type { Profile } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
 import { getSupabaseClient } from "@/lib/supabase"
 import { getOrCreateAnonymousId } from "@/lib/anonymous-id"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface Document {
   id: string
@@ -47,6 +48,7 @@ export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseU
   const [filteredDocuments, setFilteredDocuments] = useState<Document[]>([])
   const [anonymousId, setAnonymousId] = useState<string | null>(null)
   const supabase = getSupabaseClient()
+  const isMobile = useIsMobile()
 
   // Get anonymous ID on component mount
   useEffect(() => {

@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Edit, Trash2, MessageSquare, ChevronDown } from "lucide-react"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 
 export interface CommentData {
   id: string

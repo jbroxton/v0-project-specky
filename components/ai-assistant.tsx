@@ -1,4 +1,4 @@
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { DocumentSelection } from "@/components/document-selection"
 import { FileText } from "lucide-react"
 

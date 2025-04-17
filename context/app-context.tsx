@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useState, useEffect, type ReactNode } from "react"
 
 interface GoogleUser {
   email: string
@@ -28,7 +28,7 @@ interface ProductContext {
   links: LinkItem[]
 }
 
-interface AppContextType {
+export interface AppContextType {
   isLoggedIn: boolean
   user: GoogleUser | null
   selectedDocId: string | null
@@ -41,7 +41,7 @@ interface AppContextType {
   logout: () => void
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined)
+export const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
@@ -124,12 +124,4 @@ export function AppProvider({ children }: { children: ReactNode }) {
       {children}
     </AppContext.Provider>
   )
-}
-
-export function useAppContext() {
-  const context = useContext(AppContext)
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider")
-  }
-  return context
 }

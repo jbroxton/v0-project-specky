@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { Sidebar } from "@/components/sidebar"
 import { DocumentViewer } from "@/components/document-viewer"
 import { ChatWindow } from "@/components/chat-window"
@@ -10,7 +10,7 @@ import { EnhancedFixesList, type Fix } from "@/components/enhanced-fixes-list"
 import { ContextPane } from "@/components/context-pane"
 import { Button } from "@/components/ui/button"
 import { MessageSquare } from "lucide-react"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "@/hooks/use-toast"
 
 export default function Dashboard() {
   const { isLoggedIn, selectedDocId } = useAppContext()

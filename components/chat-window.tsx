@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { Loader2, ArrowUp, PlusCircle, Database, CloudIcon, Plus, X, ChevronUp, MessageSquare } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -11,7 +11,7 @@ import ReactMarkdown from "react-markdown"
 import { SpinningCube } from "@/components/spinning-cube"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
-import { useChat } from "@/context/chat-context"
+import { useChat } from "@/hooks/use-chat"
 import { DEEPINFRA_MODELS } from "@/lib/deepinfra"
 
 interface ChatWindowProps {

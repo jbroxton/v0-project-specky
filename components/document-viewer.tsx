@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useEffect, useState, useRef } from "react"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { Loader2, Edit, Save, X, ChevronDown, FileText, Plus } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Comment, CommentInput, type CommentData } from "@/components/comment"
 import type { Fix } from "@/components/enhanced-fixes-list"
 import type { JSX } from "react/jsx-runtime"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 import { TextImprovementModal } from "@/components/text-improvement-modal"
 

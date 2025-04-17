@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { X, Upload, Plus, XIcon } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
+import { toast } from "@/hooks/use-toast"
 
 interface ContextPaneProps {
   onClose: () => void
@@ -98,6 +99,11 @@ export function ContextPane({ onClose, initialText = "" }: ContextPaneProps) {
 
     // Close the pane
     onClose()
+
+    toast({
+      title: "Context Updated",
+      description: "The product context has been successfully updated.",
+    })
   }
 
   return (

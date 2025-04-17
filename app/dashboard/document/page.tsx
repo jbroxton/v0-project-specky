@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { Sidebar } from "@/components/sidebar"
 import { DocumentViewer } from "@/components/document-viewer"
 import { ChatWindow } from "@/components/chat-window"

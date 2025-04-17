@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useState, useEffect, type ReactNode } from "react"
 import type { Message, Conversation, ChatContextType } from "@/types/chat"
 import { DEFAULT_MODEL } from "@/lib/deepinfra"
 import {
@@ -10,11 +10,11 @@ import {
   getConversation,
   getUserConversations,
 } from "@/app/actions/chat-actions"
-import { useAppContext } from "@/context/app-context"
+import { useAppContext } from "@/hooks/use-app-context"
 import { v4 as uuidv4 } from "uuid"
 
 // Create the context
-const ChatContext = createContext<ChatContextType | undefined>(undefined)
+export const ChatContext = createContext<ChatContextType | undefined>(undefined)
 
 // Provider component
 export function ChatProvider({ children }: { children: ReactNode }) {
@@ -257,13 +257,4 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>
-}
-
-// Hook to use the chat context
-export function useChat() {
-  const context = useContext(ChatContext)
-  if (context === undefined) {
-    throw new Error("useChat must be used within a ChatProvider")
-  }
-  return context
 }
