@@ -1,0 +1,389 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Animation for pulsing highlight */
+@keyframes pulse-highlight {
+  0% {
+    background-color: rgba(239, 68, 68, 0.2); /* red-500 with low opacity */
+  }
+  50% {
+    background-color: rgba(239, 68, 68, 0.4); /* red-500 with medium opacity */
+  }
+  100% {
+    background-color: rgba(239, 68, 68, 0.2); /* red-500 with low opacity */
+  }
+}
+
+.animate-pulse-highlight {
+  animation: pulse-highlight 2s infinite;
+}
+
+/* Animation for fade in */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in-out;
+}
+
+/* Animation for fix applied */
+@keyframes fix-applied {
+  0% {
+    background-color: rgba(239, 68, 68, 0.4); /* red-500 with medium opacity */
+    border-color: rgba(239, 68, 68, 0.8);
+  }
+  50% {
+    background-color: rgba(34, 197, 94, 0.4); /* green-500 with medium opacity */
+    border-color: rgba(34, 197, 94, 0.8);
+  }
+  100% {
+    background-color: rgba(34, 197, 94, 0.2); /* green-500 with low opacity */
+    border-color: rgba(34, 197, 94, 0.6);
+  }
+}
+
+.animate-fix-applied {
+  animation: fix-applied 1s forwards;
+}
+
+/* Animation for connector line */
+@keyframes draw-line {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+.animate-draw-line {
+  animation: draw-line 0.5s ease-out forwards;
+}
+
+/* Smooth scrolling for the entire document */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Visual connector styles */
+.visual-connector {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #ef4444, transparent);
+  transform-origin: top;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* Error indicator styles */
+.error-indicator {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  z-index: 35;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+/* Return button animation */
+@keyframes pulse-button {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.animate-pulse-button {
+  animation: pulse-button 2s infinite;
+}
+
+/* Flash highlight animation for better visibility */
+@keyframes flash-highlight {
+  0% {
+    background-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    background-color: rgba(239, 68, 68, 0.8);
+    box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.5);
+  }
+  100% {
+    background-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+  }
+}
+
+.flash-highlight {
+  animation: flash-highlight 1.5s ease-in-out;
+  animation-iteration-count: 2;
+  scroll-margin-top: 100px; /* Add scroll margin to ensure it's visible */
+}
+
+/* Text improvement modal styles */
+.text-improvement-modal {
+  animation: fade-in 0.2s ease-out;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Improved text highlight */
+.improved-text {
+  background-color: rgba(34, 197, 94, 0.1);
+  border-left: 3px solid rgba(34, 197, 94, 0.8);
+  padding-left: 8px;
+  margin: 4px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Compact buttons for the improvement modal */
+.improvement-actions button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Add a subtle highlight animation for updated text without making it bold */
+
+/* Add this animation for text updates */
+@keyframes text-updated {
+  0% {
+    background-color: rgba(34, 197, 94, 0);
+  }
+  30% {
+    background-color: rgba(34, 197, 94, 0.2);
+  }
+  100% {
+    background-color: rgba(34, 197, 94, 0);
+  }
+}
+
+.animate-text-updated {
+  animation: text-updated 2s ease-out forwards;
+  font-weight: normal !important; /* Use !important to override any inherited bold styling */
+}
+
+/* Add a new class for inserted text to ensure it's never bold */
+.inserted-text {
+  font-weight: normal !important;
+  font-style: normal !important;
+}
+
+/* Add these even more aggressive CSS rules at the end of the file */
+
+/* Force normal text weight for all paragraphs in the document */
+.document-content p {
+  font-weight: normal !important;
+  font-style: normal !important;
+  text-decoration: none !important;
+}
+
+/* Target paragraphs that have been improved */
+[data-text-improved="true"] {
+  font-weight: normal !important;
+  font-style: normal !important;
+  text-decoration: none !important;
+  font-family: inherit !important;
+}
+
+/* Add a subtle animation for newly inserted text */
+@keyframes highlight-inserted {
+  0% {
+    background-color: rgba(34, 197, 94, 0.1);
+  }
+  50% {
+    background-color: rgba(34, 197, 94, 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.text-just-inserted {
+  animation: highlight-inserted 2s ease-out forwards;
+  font-weight: normal !important;
+}
+
+/* Override any possible bold styling from parent elements */
+.document-content p *,
+.document-content h1 *,
+.document-content h2 *,
+.document-content h3 *,
+.document-content h4 *,
+.document-content h5 *,
+.document-content h6 * {
+  font-weight: inherit !important;
+}
+
+/* Ensure text runs never inherit bold formatting */
+.document-content p span,
+.document-content p div {
+  font-weight: normal !important;
+}
+
+/* Apple-inspired button pulse animation */
+@keyframes button-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.pulse-button {
+  animation: button-pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+}
+
+.pulse-button:hover {
+  animation: none;
+  transform: scale(1.05);
+}
+
+/* Apple-inspired font styles */
+.font-display {
+  font-feature-settings: "salt", "ss01", "ss02";
+  letter-spacing: -0.025em;
+}
+
+/* Add this to the end of the file to ensure proper text rendering */
+.text-zinc-400 {
+  line-height: 1.6;
+  padding-bottom: 2px;
+}
+
+/* Ensure descenders like 'y', 'g', 'p', 'q', 'j' are fully visible */
+p {
+  overflow: visible;
+  margin-bottom: 0.25rem;
+}
+
+/* More aggressive fix for descenders */
+p,
+.text-zinc-400 {
+  line-height: 1.8 !important;
+  padding-bottom: 6px !important;
+  padding-top: 2px !important;
+  margin-bottom: 4px !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+/* Specific fix for feature boxes */
+.rounded-3xl p {
+  margin-bottom: 8px !important;
+  padding-bottom: 8px !important;
+  min-height: 3.5rem !important;
+}
+
+/* Ensure container has enough space */
+.group {
+  overflow: visible !important;
+  padding-bottom: 4px !important;
+}
+
+/* Add these rules at the end of the file */
+
+/* Fix for text descenders */
+.text-zinc-400 {
+  display: inline-block !important;
+  line-height: 1.8 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure containers don't clip content */
+.rounded-3xl {
+  overflow: visible !important;
+}
+
+/* Ensure flexbox containers properly display text */
+.h-16.flex {
+  overflow: visible !important;
+  align-items: flex-start !important;
+}
+
+/* Ensure text doesn't get cut off */
+.h-16.flex div {
+  overflow: visible !important;
+  line-height: 1.6 !important;
+}
