@@ -9,14 +9,12 @@ import { Label } from "@/components/ui/label"
 import { getSupabaseClient } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 import { toast } from "@/hooks/use-toast"
-import { Loader2, ArrowRight } from "lucide-react"
-import { signInAnonymously } from "@/lib/anonymous-auth"
+import { Loader2 } from "lucide-react"
 
 export function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [isSkipLoading, setIsSkipLoading] = useState(false)
   const router = useRouter()
   const supabase = getSupabaseClient()
 
@@ -62,41 +60,6 @@ export function LoginForm() {
     }
   }
 
-  const handleSkipLogin = async () => {
-    setIsSkipLoading(true)
-
-    try {
-      const { success, error } = await signInAnonymously()
-
-      if (!success) {
-        toast({
-          title: "Anonymous login failed",
-          description: error || "Failed to create anonymous session",
-          variant: "destructive",
-        })
-        return
-      }
-
-      toast({
-        title: "Welcome to Specky!",
-        description: "You're using the app as a guest. Your data will be saved to your anonymous account.",
-      })
-
-      // Redirect to dashboard
-      router.push("/dashboard")
-      router.refresh()
-    } catch (error) {
-      console.error("Skip login error:", error)
-      toast({
-        title: "Anonymous login failed",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSkipLoading(false)
-    }
-  }
-
   return (
     <div className="mx-auto w-full max-w-md space-y-6 p-6 bg-zinc-900 border border-zinc-800 rounded-lg">
       <div className="space-y-2 text-center">
@@ -139,35 +102,6 @@ export function LoginForm() {
           )}
         </Button>
       </form>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-zinc-700" />
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-zinc-900 px-2 text-zinc-400">or</span>
-        </div>
-      </div>
-
-      <Button
-        variant="outline"
-        className="w-full border-zinc-700 hover:bg-zinc-800"
-        onClick={handleSkipLogin}
-        disabled={isSkipLoading}
-      >
-        {isSkipLoading ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Creating guest session...
-          </>
-        ) : (
-          <>
-            Skip Login
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </>
-        )}
-      </Button>
-
       <div className="text-center text-sm">
         <p className="text-zinc-400">
           Don't have an account?{" "}

@@ -2,14 +2,14 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAppContext } from "@/hooks/use-app-context"
+import { useAuth } from "@/hooks/use-auth" // Changed import
 import { Sidebar } from "@/components/sidebar"
 import { DocumentViewer } from "@/components/document-viewer"
 import { ChatWindow } from "@/components/chat-window"
 import { ContextPane } from "@/components/context-pane"
 
 export default function DocumentPage() {
-  const { isLoggedIn } = useAppContext()
+  const { isAuthenticated } = useAuth() // Changed to isAuthenticated
   const router = useRouter()
   const [selectedText, setSelectedText] = useState("")
   const [isContextPaneOpen, setIsContextPaneOpen] = useState(false)

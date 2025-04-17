@@ -13,6 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useRouter } from "next/navigation"
 import { useChat } from "@/hooks/use-chat"
 import { DEEPINFRA_MODELS } from "@/lib/deepinfra"
+import { useAuth } from "@/components/auth/auth-provider"
 
 interface ChatWindowProps {
   selectedText?: string
@@ -34,7 +35,8 @@ export function ChatWindow({
   currentView,
 }: ChatWindowProps) {
   const router = useRouter()
-  const { user, selectedDocId, docContent, setSelectedDocId, setDocContent } = useAppContext()
+  const { authUser } = useAuth()
+  const { selectedDocId, docContent, setSelectedDocId, setDocContent } = useAppContext()
   const {
     messages,
     isLoading,
@@ -177,8 +179,8 @@ export function ChatWindow({
                   </div>
                 ) : (
                   <Avatar className="mt-1 h-8 w-8 bg-zinc-700">
-                    <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
-                    <AvatarImage src={user?.picture || "/placeholder.svg"} alt={user?.name || "User"} />
+                    <AvatarFallback>{authUser?.name?.charAt(0) || "U"}</AvatarFallback>
+                    <AvatarImage src={authUser?.picture || "/placeholder.svg"} alt={authUser?.name || "User"} />
                   </Avatar>
                 )}
                 <div className="prose prose-sm prose-invert max-w-none flex-1">

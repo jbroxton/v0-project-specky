@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Edit, Trash2, MessageSquare, ChevronDown } from "lucide-react"
-import { useAppContext } from "@/hooks/use-app-context"
+import { useAuth } from "@/components/auth/auth-provider"
 
 export interface CommentData {
   id: string
@@ -32,7 +32,7 @@ interface CommentProps {
 export function Comment({ comment, onResolve, onDelete, onUpdate, onToggleMinimize }: CommentProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editText, setEditText] = useState(comment.text)
-  const { user } = useAppContext()
+  const { authUser } = useAuth()
 
   const handleSave = () => {
     if (editText.trim()) {
@@ -46,7 +46,7 @@ export function Comment({ comment, onResolve, onDelete, onUpdate, onToggleMinimi
     setIsEditing(false)
   }
 
-  const isCurrentUser = user?.name === comment.author.name
+  const isCurrentUser = authUser?.name === comment.author.name
 
   // Render minimized comment
   if (comment.minimized) {
@@ -135,7 +135,7 @@ export function CommentInput({
   onCancel: () => void
 }) {
   const [text, setText] = useState("")
-  const { user } = useAppContext()
+  const { authUser } = useAuth()
 
   const handleSubmit = () => {
     if (text.trim()) {
@@ -148,10 +148,10 @@ export function CommentInput({
     <div className="bg-zinc-800 rounded-md shadow-lg w-64 p-3">
       <div className="flex items-center gap-2 mb-2">
         <Avatar className="h-6 w-6">
-          <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
-          <AvatarImage src={user?.picture || "/placeholder.svg"} alt={user?.name || "User"} />
+          <AvatarFallback>{authUser?.name?.charAt(0) || "U"}</AvatarFallback>
+          <AvatarImage src={authUser?.picture || "/placeholder.svg"} alt={authUser?.name || "User"} />
         </Avatar>
-        <span className="text-xs font-medium">{user?.name || "User"}</span>
+        <span className="text-xs font-medium">{authUser?.name || "User"}</span>
       </div>
       <div className="space-y-2">
         <Textarea

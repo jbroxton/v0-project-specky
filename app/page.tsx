@@ -2,21 +2,21 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useAppContext } from "@/hooks/use-app-context"
+import { useAuth } from "@/components/auth/auth-provider"
 import { Button } from "@/components/ui/button"
 import { CheckSquare, FileText, Zap, ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function Home() {
-  const { isLoggedIn, login } = useAppContext()
+  const { isAuthenticated, login } = useAuth()
   const router = useRouter()
 
   // Redirect to dashboard if already logged in
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       router.push("/dashboard")
     }
-  }, [isLoggedIn, router])
+  }, [isAuthenticated, router])
 
   const handleLogin = () => {
     login()

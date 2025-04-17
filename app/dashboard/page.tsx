@@ -3,16 +3,19 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/hooks/use-app-context"
-import type { Fix } from "@/components/enhanced-fixes-list"
+import { Sidebar } from "@/components/sidebar"
+import { DocumentViewer } from "@/components/document-viewer"
+import { ChatWindow } from "@/components/chat-window"
+import { EnhancedFixesList, type Fix } from "@/components/enhanced-fixes-list"
+import { ContextPane } from "@/components/context-pane"
+import { Button } from "@/components/ui/button"
+import { MessageSquare } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
-import { Header } from "@/components/header"
-import { UserDocumentsList } from "@/components/dashboard/user-documents-list"
-import { RecentConversations } from "@/components/dashboard/recent-conversations"
-import { UserStats } from "@/components/dashboard/user-stats"
-import { useAuth } from "@/hooks/use-auth"
+import { useAuth } from "@/components/auth/auth-provider"
 
 export default function Dashboard() {
-  const { isLoggedIn, selectedDocId } = useAppContext()
+  const { isAuthenticated } = useAuth()
+  const { selectedDocId } = useAppContext()
   const router = useRouter()
   const [selectedText, setSelectedText] = useState("")
   const [isContextPaneOpen, setIsContextPaneOpen] = useState(false)
@@ -23,7 +26,6 @@ export default function Dashboard() {
   const [selectedFixId, setSelectedFixId] = useState<string | null>(null)
   const [showFixAnimation, setShowFixAnimation] = useState<string | null>(null)
   const [isLoadingFixes, setIsLoadingFixes] = useState(false)
-  const { user } = useAuth()
 
   // Removed auto-login useEffect
 
@@ -151,25 +153,117 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Header />
-      <main className="container mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            Welcome, {user?.user_metadata?.full_name || user?.email || "User"}
-          </h1>
-          <p className="text-zinc-400">Here's an overview of your activity</p>
+    <div className="flex h-screen flex-col bg-black text-white">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="border-r border-zinc-800">
+          <Sidebar />
         </div>
+        <div className={`flex flex-1 flex-col ${isContextPaneOpen ? "mr-80" : ""}`}>
+          {/* Database setup notice */}
 
-        <div className="mb-8">
-          <UserStats />
+          {selectedDocId ? (
+            // Split screen layout when document is selected
+            <>
+              <div className="flex-1 overflow-hidden border-b border-zinc-800">
+                <DocumentViewer
+                  onTextSelect={setSelectedText}
+                  setChatInput={setChatInput}
+                  fixes={fixes}
+                  hoveredFixId={hoveredFixId}
+                  selectedFixId={selectedFixId}
+                  onReturnToList={handleReturnToList}
+                />
+              </div>
+              <div className="h-[40%] min-h-[300px]">
+                {currentView === "chat" ? (
+                  <ChatWindow
+                    selectedText={selectedText}
+                    isContextPaneOpen={isContextPaneOpen}
+                    toggleContextPane={toggleContextPane}
+                    chatInput={chatInput}
+                    setChatInput={setChatInput}
+                    onViewChange={setCurrentView}
+                    currentView={currentView}
+                  />
+                ) : (
+                  <div className="flex flex-col h-full">
+                    <div className="border-b border-zinc-800 px-4 py-2 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={setupDatabase}
+                          className="mr-2 bg-zinc-800 border-zinc-700"
+                        >
+                          Setup Database
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={testDeepInfraAPI}
+                          className="mr-2 bg-zinc-800 border-zinc-700"
+                        >
+                          Test DeepInfra API
+                        </Button>
+                        {/* View toggle buttons */}
+                        <div className="flex gap-2">
+                          <Button
+                            variant={currentView === "chat" ? "default" : "outline"}
+                            size="sm"
+                            className="h-8"
+                            onClick={() => setCurrentView("chat")}
+                          >
+                            <MessageSquare className="h-4 w-4 mr-2" />
+                            Chat
+                          </Button>
+                          <Button
+                            variant={currentView === "fixes" ? "default" : "outline"}
+                            size="sm"
+                            className="h-8"
+                            onClick={() => setCurrentView("fixes")}
+                          >
+                            Fixes{" "}
+                            {fixes.filter((f) => f.applied === null).length > 0 && (
+                              <span className="ml-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                {fixes.filter((f) => f.applied === null).length}
+                              </span>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    <EnhancedFixesList
+                      fixes={fixes}
+                      onFixAction={handleFixAction}
+                      onFixHover={handleFixHover}
+                      onFixSelect={handleFixSelect}
+                      selectedFixId={selectedFixId}
+                    />
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            // Full screen chat when no document is selected
+            <div className="flex-1 overflow-hidden">
+              <ChatWindow
+                selectedText={selectedText}
+                isContextPaneOpen={isContextPaneOpen}
+                toggleContextPane={toggleContextPane}
+                chatInput={chatInput}
+                setChatInput={setChatInput}
+                onViewChange={setCurrentView}
+                currentView={currentView}
+              />
+            </div>
+          )}
         </div>
-
-        <div className="grid gap-8 md:grid-cols-2">
-          <UserDocumentsList />
-          <RecentConversations />
-        </div>
-      </main>
+        {isContextPaneOpen && (
+          <div className="fixed right-0 top-0 h-full z-20">
+            <ContextPane onClose={toggleContextPane} initialText={selectedText} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

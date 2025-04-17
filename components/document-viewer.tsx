@@ -15,6 +15,8 @@ import type { JSX } from "react/jsx-runtime"
 import { toast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 import { TextImprovementModal } from "@/components/text-improvement-modal"
+// Add the import for useAuth
+import { useAuth } from "@/components/auth/auth-provider"
 
 interface StructuralElement {
   paragraph?: {
@@ -55,7 +57,12 @@ interface TextRange {
 
 export function DocumentViewer(props: DocumentViewerProps) {
   const { onTextSelect, setChatInput, className = "", fixes = [], hoveredFixId = null } = props
-  const { docContent, selectedDocId, setDocContent, user, setSelectedDocId } = useAppContext()
+  // Replace the line that gets user from useAppContext
+  // FROM:
+  // const { docContent, selectedDocId, setDocContent, user, setSelectedDocId } = useAppContext()
+  // TO:
+  const { docContent, selectedDocId, setDocContent, setSelectedDocId } = useAppContext()
+  const { authUser } = useAuth()
   const [selectedText, setSelectedText] = useState("")
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState<any>(null)
@@ -571,7 +578,7 @@ export function DocumentViewer(props: DocumentViewerProps) {
 
   // Submit a new comment
   const submitComment = (text: string) => {
-    if (selectedText && user && selectedTextRange) {
+    if (selectedText && authUser && selectedTextRange) {
       const commentId = Date.now().toString()
 
       const newComment: CommentData = {
@@ -581,8 +588,8 @@ export function DocumentViewer(props: DocumentViewerProps) {
         position: commentPosition,
         timestamp: new Date(),
         author: {
-          name: user.name,
-          picture: user.picture,
+          name: authUser.name,
+          picture: authUser.picture,
         },
         minimized: true, // Start minimized after saving
       }

@@ -12,9 +12,7 @@ import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { Profile } from "@/lib/supabase"
-import type { User } from "@supabase/supabase-js"
-import { getSupabaseClient } from "@/lib/supabase"
-import { getOrCreateAnonymousId } from "@/lib/anonymous-id"
+import { useAuth } from "@/components/auth/auth-provider"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface Document {
@@ -36,27 +34,17 @@ interface SidebarProps {
   profileData?: Profile | null
   isLoadingProfile?: boolean
   profileError?: string | null
-  supabaseUser?: User | null
 }
 
-export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseUser }: SidebarProps) {
-  const { user, logout, selectedDocId, setSelectedDocId, setDocContent } = useAppContext()
+export function Sidebar({ profileData, isLoadingProfile, profileError }: SidebarProps) {
+  const { selectedDocId, setSelectedDocId, setDocContent } = useAppContext()
+  const { authUser, loading: authLoading, signOut, isAuthenticated } = useAuth()
   const [collapsed, setCollapsed] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [documents, setDocuments] = useState<Document[]>([])
   const [filteredDocuments, setFilteredDocuments] = useState<Document[]>([])
-  const [anonymousId, setAnonymousId] = useState<string | null>(null)
-  const supabase = getSupabaseClient()
   const isMobile = useIsMobile()
-
-  // Get anonymous ID on component mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const anonId = getOrCreateAnonymousId()
-      setAnonymousId(anonId)
-    }
-  }, [])
 
   // Load documents when component mounts
   useEffect(() => {
@@ -91,12 +79,6 @@ export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseU
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed)
-  }
-
-  // Handle Supabase logout
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    logout() // Also call the app context logout for compatibility
   }
 
   // Navigation items - only Settings
@@ -137,26 +119,20 @@ export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseU
 
   // Get user display name and email
   const getUserDisplayName = () => {
-    if (isLoadingProfile) return "Loading..."
+    if (isLoadingProfile || authLoading) return "Loading..."
     if (profileData?.full_name) return profileData.full_name
-    if (supabaseUser?.user_metadata?.full_name) return supabaseUser.user_metadata.full_name
-    return user?.name || "User"
+    return authUser?.name || "User"
   }
 
   const getUserEmail = () => {
     if (profileData?.email) return profileData.email
-    if (supabaseUser?.email) return supabaseUser.email
-    return user?.email || ""
+    return authUser?.email || ""
   }
 
   const getUserAvatar = () => {
     if (profileData?.avatar_url) return profileData.avatar_url
-    if (supabaseUser?.user_metadata?.avatar_url) return supabaseUser.user_metadata.avatar_url
-    return user?.picture || "/placeholder.svg"
+    return authUser?.picture || "/placeholder.svg"
   }
-
-  // Check if user is authenticated
-  const isAuthenticated = !!supabaseUser || !!user
 
   return (
     <div
@@ -208,7 +184,7 @@ export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseU
               filteredDocuments.map((doc) => (
                 <button
                   key={doc.id}
-                  className={`flex w-full items-center rounded-md p-2 text-left text-sm transition-colors hover:bg-zinc-800 ${
+                  className={`flex w-full items-center gap-3 rounded-md p-2 text-left text-sm transition-colors hover:bg-zinc-800 ${
                     selectedDocId === doc.id ? "bg-zinc-800" : ""
                   }`}
                   onClick={() => handleDocumentSelect(doc.id)}
@@ -293,7 +269,7 @@ export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseU
             {!collapsed && (
               <div className="flex flex-col">
                 <span className="text-sm font-medium">{getUserDisplayName()}</span>
-                <button onClick={handleLogout} className="text-xs text-zinc-400 hover:text-zinc-300 text-left">
+                <button onClick={signOut} className="text-xs text-zinc-400 hover:text-zinc-300 text-left">
                   Sign out
                 </button>
               </div>
@@ -306,9 +282,7 @@ export function Sidebar({ profileData, isLoadingProfile, profileError, supabaseU
             </Avatar>
             {!collapsed && (
               <div className="flex flex-col">
-                <span className="text-sm font-medium" title={anonymousId || "Anonymous User"}>
-                  Anonymous User
-                </span>
+                <span className="text-sm font-medium">Anonymous User</span>
                 <div className="flex gap-2 mt-1">
                   <Button asChild size="sm" variant="outline" className="h-7 text-xs px-3 py-0">
                     <Link href="/login">Sign in</Link>

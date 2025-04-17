@@ -1,9 +1,13 @@
+"use client"
+
 import { useAppContext } from "@/hooks/use-app-context"
 import { DocumentSelection } from "@/components/document-selection"
 import { FileText } from "lucide-react"
+import { useAuth } from "@/components/auth/auth-provider"
 
 export function AIAssistant() {
   const { selectedDocId } = useAppContext()
+  const { isAuthenticated } = useAuth()
 
   if (!selectedDocId) {
     return (

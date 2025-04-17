@@ -5,6 +5,7 @@ import "./globals.css"
 import { AppProvider } from "@/context/app-context"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ChatProvider } from "@/context/chat-context"
+import { AuthProvider } from "@/components/auth/auth-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={`${inter.className} h-full`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <AppProvider>
-            <ChatProvider>{children}</ChatProvider>
-          </AppProvider>
+          <AuthProvider>
+            <AppProvider>
+              <ChatProvider>{children}</ChatProvider>
+            </AppProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

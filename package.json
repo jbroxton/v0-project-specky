@@ -62,9 +62,9 @@
     "jwt-decode": "latest",
     "@radix-ui/react-icons": "latest",
     "uuid": "latest",
-    "react-markdown": "latest",
     "@supabase/auth-helpers-nextjs": "latest",
-    "next-client-cookies": "latest"
+    "next-client-cookies": "latest",
+    "react-markdown": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
