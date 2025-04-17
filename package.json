@@ -63,7 +63,8 @@
     "@radix-ui/react-icons": "latest",
     "@supabase/auth-helpers-nextjs": "latest",
     "uuid": "latest",
-    "react-markdown": "latest"
+    "react-markdown": "latest",
+    "next-client-cookies": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
