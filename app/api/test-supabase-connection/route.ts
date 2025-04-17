@@ -1,5 +1,3 @@
-// Fix the API route to ensure it always returns valid JSON
-
 import { NextResponse } from "next/server"
 import { getSupabaseClient } from "@/lib/supabase"
 
